@@ -56,11 +56,8 @@ class Abuelita {
     }
     draw(){
         if (mouse.click){
-            ctx.lineWidth = 0.2;
             ctx.beginPath();
             ctx.moveTo(this.x, this.y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
         }
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -77,6 +74,8 @@ const player = new Abuelita();
 
 //pavos
 const pavosArray =[];
+const imgPavo = new Image();
+imgPavo.src = "Images/Flying.png"
 class Pavo {
     constructor(){
 
@@ -88,6 +87,9 @@ class Pavo {
         this.distance;
         this.counted = false;
         this.sound = Math.random() <= 0.5 ? 'sound1' : 'sound2';
+        this.frameX = 0;
+        this.spriteWidth = 764;
+        this.spriteHeight = 646;
     }
     update(){
         // replaced this.y to this.x on this.speed
@@ -98,12 +100,13 @@ class Pavo {
     }
 
     draw(){
-        ctx.fillStyle = 'blue';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.closePath();
-        ctx.stroke();
+        // ctx.fillStyle = 'blue';
+        // ctx.beginPath();
+        // ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        // ctx.fill();
+        // ctx.closePath();
+        // ctx.stroke();
+        ctx.drawImage(imgPavo, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth/4, this.spriteHeight/4);
     }
 }
 
