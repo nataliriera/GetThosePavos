@@ -34,6 +34,7 @@ class Abuelita {
     constructor(){
         this.x = canvas.width;
         this.y = canvas.height /2;
+        this.radius = 50;
         this.angle = 0;
         this.frameX = 0;
         this.frameY = 0;
@@ -55,16 +56,11 @@ class Abuelita {
     }
     draw(){
         if (mouse.click){
-            ctx.lineWidth = 0.2;
             ctx.beginPath();
             ctx.moveTo(this.x, this.y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
         }
-        ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
         ctx.closePath();
         if (this.x >= mouse.x){
             ctx.drawImage(abuelitaLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x - 140, this.y - 140, this.spriteWidth/4, this.spriteHeight/4);
@@ -78,6 +74,8 @@ const player = new Abuelita();
 
 //pavos
 const pavosArray =[];
+const imgPavo = new Image();
+imgPavo.src = "Images/Flying.png"
 class Pavo {
     constructor(){
 
@@ -89,6 +87,9 @@ class Pavo {
         this.distance;
         this.counted = false;
         this.sound = Math.random() <= 0.5 ? 'sound1' : 'sound2';
+        this.frameX = 0;
+        this.spriteWidth = 764;
+        this.spriteHeight = 646;
     }
     update(){
         // replaced this.y to this.x on this.speed
@@ -99,12 +100,13 @@ class Pavo {
     }
 
     draw(){
-        ctx.fillStyle = 'blue';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.closePath();
-        ctx.stroke();
+        // ctx.fillStyle = 'blue';
+        // ctx.beginPath();
+        // ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        // ctx.fill();
+        // ctx.closePath();
+        // ctx.stroke();
+        ctx.drawImage(imgPavo, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth/4, this.spriteHeight/4);
     }
 }
 
