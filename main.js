@@ -34,6 +34,7 @@ class Abuelita {
     constructor(){
         this.x = canvas.width;
         this.y = canvas.height /2;
+        this.radius = 50;
         this.angle = 0;
         this.frameX = 0;
         this.frameY = 0;
@@ -61,10 +62,8 @@ class Abuelita {
             ctx.lineTo(mouse.x, mouse.y);
             ctx.stroke();
         }
-        ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
         ctx.closePath();
         if (this.x >= mouse.x){
             ctx.drawImage(abuelitaLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x - 140, this.y - 140, this.spriteWidth/4, this.spriteHeight/4);
