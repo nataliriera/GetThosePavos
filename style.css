@@ -15,7 +15,8 @@
   }
   
  #canvas{
-     background-color: white;
+     background-image: url("/Images/bg.png");
+     background-size: cover;
      width: 800px;
      height: 500px;
      box-shadow: 8px 8px 9px 1px rgba(0, 0, 0, 0.83); 
@@ -30,3 +31,4 @@
      display: flex;
      justify-content: center;
  }
+

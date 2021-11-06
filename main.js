@@ -53,12 +53,24 @@ class Abuelita {
         if(mouse.y != this.y){
             this.y -= dy/10;
         }
-    }
+        
+      
+    
+}
     draw(){
         if (mouse.click){
             ctx.beginPath();
             ctx.moveTo(this.x, this.y);
-        }
+            if (gameFrame % 2 == 0) {
+                this.frame++;
+                if (this.frame >= 6) this.frame = 0
+                if ( this.frame == 0) {
+                    this.frameX = 0;
+                } else this.frameX++;
+                
+              
+            }
+        }  
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.closePath();
@@ -97,8 +109,20 @@ class Pavo {
         const dx = this.x - player.x;
         const dy = this.y - player.y;
         this.distance = Math.sqrt(dx * dx + dy * dy);
-    }
+        if (gameFrame % 100 == 0) {
+            this.frame++;
+            if (this.frame >= 15) this.frame = 1
+            if ( this.frame == 4 ||  this.frame == 9 ||  this.frame == 14) {
+                this.frameX = 1;
+            } else this.frameX++; 
+    
+            if ( this.frame == 4 ||  this.frame == 9 ||  this.frame == 14) {
+                this.frameY = 0;
+            } else this.frameY++;
 
+        }
+        
+    } 
     draw(){
         // ctx.fillStyle = 'blue';
         // ctx.beginPath();
@@ -114,7 +138,7 @@ const pavoPop1 = document.createElement('audio');
 pavoPop1.src = "pavo.mp3";
 
 function handlePavo(){
-    if(gameFrame % 50 == 0){
+    if(gameFrame % 150 == 0){
         pavosArray.push(new Pavo());
     }
     for (let i = 0; i < pavosArray.length; i++){
