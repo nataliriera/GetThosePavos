@@ -1,12 +1,12 @@
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-canvas.width = 800;
-canvas.height = 500;
+canvas.width = 1000;
+canvas.height = 700;
 
 let score = 0;
 let gameFrame = 0;
-ctx.font = "50px Arial";
+ctx.font = "30px Arial";
 
 //mouse
 let canvasPosition = canvas.getBoundingClientRect();
