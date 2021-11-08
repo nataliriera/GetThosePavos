@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
+
+body{
+    background-image: url("/Images/woodbackground.jpg");
+    background-size: contain;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+header{
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 10rem;
+    display: flex;
+    justify-content: center;
+}
+
+button{
+   color: #ecb387;
+   font-size: 1.5em;
+   font-family: 'Mochiy Pop One', sans-serif;
+   background-color:#9A281A;
+   border-radius: 10px;
+   width:20rem;
+   height: 3rem;
+   border:none;
+   box-shadow: 8px 8px 9px 1px rgba(0, 0, 0, 0.83); 
+   
+}
+
+
+#instructions h1{
+    font-size: 3em;
+    font-family: 'Mochy Pop One', sans-serif;
+    color: #9A281A;
+    display: flex;
+    justify-content:center;
+}
+
+body h2{
+    font-size: 1.5em;
+    font-family: 'Mochy Pop One', sans-serif;
+    color: #9A281A; 
+}
+
+ul{
+    font-size: 1.5em;
+    font-family: 'Mochy Pop One', sans-serif;
+    color: #9A281A; 
+  
+}
+#button{
+    display: flex;
+    justify-content: center;
+}

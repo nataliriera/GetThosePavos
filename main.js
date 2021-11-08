@@ -1,15 +1,52 @@
 
+
+
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-canvas.width = 1000;
-canvas.height = 700;
+canvas.width = 800;
+canvas.height = 500;
 
 let score = 0;
 let gameFrame = 0;
-ctx.font = "30px Arial";
+ctx.font = "50px Arial";
+let canvasPosition = canvas.getBoundingClientRect();
+var audio = new Audio('fondo.m4a');
+  audio.play();
+//background
+class Background {
+    //constructor
+    constructor(w,h){
+        this.x = 0;
+        this.y = 0;
+        this.width = w;
+        this.height = h;
+        this.image = new Image();
+        this.image.src = "Images/bg.png" // ./ => en este mismo nievel; ../ salte un nivel
+       
+    }
+
+    //metodos
+    draw(){
+        //para hacer que el background se mueva
+        if(this.x < -canvas.width){
+            this.x = 0
+        }
+        this.x--;
+
+        //dibujar la imagen
+        ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
+        ctx.drawImage(
+            this.image,
+            this.x + this.width,
+            this.y,
+            this.width,
+            this.height
+        )
+    }}
+    
 
 //mouse
-let canvasPosition = canvas.getBoundingClientRect();
+
 const mouse = {
     x: canvas.width / 2,
     y: canvas.height / 2,
@@ -53,10 +90,7 @@ class Abuelita {
         if(mouse.y != this.y){
             this.y -= dy/10;
         }
-        
-      
-    
-}
+    }
     draw(){
         if (mouse.click){
             ctx.beginPath();
@@ -70,7 +104,9 @@ class Abuelita {
                 
               
             }
-        }  
+        } 
+        
+ 
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.closePath();
@@ -92,6 +128,7 @@ class Pavo {
     constructor(){
 
         // inverted the x and y axis
+        this.frame = 0;
         this.y = Math.random() * canvas.height
         this.x = canvas.width + 100
         this.radius = 50;
@@ -111,7 +148,7 @@ class Pavo {
         this.distance = Math.sqrt(dx * dx + dy * dy);
         if (gameFrame % 100 == 0) {
             this.frame++;
-            if (this.frame >= 15) this.frame = 1
+            if (this.frame > 15) this.frame = 0
             if ( this.frame == 4 ||  this.frame == 9 ||  this.frame == 14) {
                 this.frameX = 1;
             } else this.frameX++; 
@@ -123,6 +160,7 @@ class Pavo {
         }
         
     } 
+
     draw(){
         // ctx.fillStyle = 'blue';
         // ctx.beginPath();
@@ -138,34 +176,103 @@ const pavoPop1 = document.createElement('audio');
 pavoPop1.src = "pavo.mp3";
 
 function handlePavo(){
-    if(gameFrame % 150 == 0){
+    
+    if(gameFrame % 50 == 0){
         pavosArray.push(new Pavo());
     }
-    for (let i = 0; i < pavosArray.length; i++){
-        pavosArray[i].update();
-        pavosArray[i].draw();   
-    }
-    for (let i = 0; i < pavosArray.length; i++){
-        if (pavosArray[i].y < 0 - pavosArray[i].radius*2){
-            pavosArray.splice(i,1);
-        }
-        if(pavosArray[i].distance < pavosArray[i].radius + player.radius){
-            if(!pavosArray[i].counted){
-                if(pavosArray[i].sound == 'sound1'){
-                    pavoPop1.play();
+    pavosArray.forEach((pavo, index_pavo)=>{
+        pavo.draw()
+        pavo.update()
+        if(pavo.distance < pavo.radius + player.radius){
+            if(!pavo.counted){
+                if(pavo.sound == 'sound1'){
+                    pavoPop1.play()
                 }
                 score++;
-                pavosArray[i].counted = true;
-                pavosArray.splice(i, 1);
+                pavo.counted = true;
+                pavosArray.splice (index_pavo, 1)
             }
         }
+        if(pavo.x + pavo.radius < 0){
+            pavosArray.splice(index_pavo, 1)
+        }
+    })
+    
+}
+
+// enemy 
+const enemiesArray =[];
+const imgEnemy = new Image();
+imgEnemy.src = "Images/farmer.png"
+class Enemy {
+    constructor(){
+
+        // inverted the x and y axis
+        this.frame = 0;
+        this.y = Math.random() * canvas.height
+        this.x = canvas.width + 100
+        this.radius = 50;
+        this.speed = Math.random()* 1+ 1;
+        this.distance;
+        this.counted = false;
+        this.frameX = 0;
+        this.spriteWidth = 1351;
+        this.spriteHeight = 1027;
+    }
+    update(){
+        // replaced this.y to this.x on this.speed
+        this.x -= this.speed;
+        const dx = this.x - player.x;
+        const dy = this.y - player.y;
+        this.distance = Math.sqrt(dx * dx + dy * dy);
+        if (gameFrame % 8 == 0) {
+            this.frame++;
+            if (this.frame >= 9) this.frame = 0
+            if ( this.frame == 0) {
+                this.frameX = 0;
+            } else this.frameX++;
+            
+          
+        }
+        
+    } 
+
+    draw(){
+        
+        ctx.drawImage(imgEnemy, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 140, this.y - 140, this.spriteWidth/4, this.spriteHeight/4);
     }
 }
 
-//animacion
+
+
+function handleEnemy(){
+    
+    if(gameFrame % 500 == 0){
+        enemiesArray.push(new Enemy());
+    }
+    enemiesArray.forEach((enemy, index_enemy)=>{
+        enemy.draw()
+        enemy.update()
+        if(enemy.distance < enemy.radius + player.radius){
+            if(!enemy.counted){
+                
+                score++;
+                enemy.counted = true;
+                enemiesArray.splice (index_enemy, 1)
+            }
+        }
+        if(enemy.x + enemy.radius < 0){
+            enemiesArray.splice(index_enemy, 1)
+        }
+    })
+    
+}
+
+
 function animate(){
     ctx.clearRect(0,0, canvas.width, canvas.height);
     handlePavo();
+    handleEnemy();
     player.update();
     player.draw();
     ctx.fillStyle = 'black';
