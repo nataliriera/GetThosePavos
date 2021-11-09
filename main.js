@@ -3,15 +3,28 @@
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-canvas.width = 800;
-canvas.height = 500;
+canvas.width = 1000;
+canvas.height = 700;
 
 let score = 0;
 let gameFrame = 0;
-ctx.font = "50px Arial";
+ctx.font = "50px Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif";
 let canvasPosition = canvas.getBoundingClientRect();
+
+//AUDIO 
 var audio = new Audio('fondo.m4a');
+if (typeof audio.loop == 'boolean') {
+    audio.loop = true;
+} 
+else {
+    audio.addEventListener('ended', function(){
+        this.currentTime = 0;
+        this.play();
+    }, false);
+}
   audio.play();
+
+
 //background
 class Background {
     //constructor
@@ -21,11 +34,10 @@ class Background {
         this.width = w;
         this.height = h;
         this.image = new Image();
-        this.image.src = "Images/bg.png" // ./ => en este mismo nievel; ../ salte un nivel
-       
+        this.image.src = "Images/bgcopy.png" // ./ => en este mismo 
     }
 
-    //metodos
+    
     draw(){
         //para hacer que el background se mueva
         if(this.x < -canvas.width){
@@ -42,8 +54,9 @@ class Background {
             this.width,
             this.height
         )
-    }}
-    
+    }
+}
+
 
 //mouse
 
@@ -78,8 +91,6 @@ class Abuelita {
         this.frame = 0;
         this.spriteWidth = 1141;
         this.spriteHeight = 992;
-        // this.image = new Image();
-        // this.image.src = "./images/Abuelita.png"
     }
     update(){
         const dx = this.x - mouse.x;
@@ -105,6 +116,8 @@ class Abuelita {
               
             }
         } 
+
+        
         
  
         ctx.beginPath();
@@ -117,6 +130,7 @@ class Abuelita {
 
         }
     }
+    
 }
 const player = new Abuelita();
 
@@ -162,12 +176,6 @@ class Pavo {
     } 
 
     draw(){
-        // ctx.fillStyle = 'blue';
-        // ctx.beginPath();
-        // ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        // ctx.fill();
-        // ctx.closePath();
-        // ctx.stroke();
         ctx.drawImage(imgPavo, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 68, this.y - 68, this.spriteWidth/4, this.spriteHeight/4);
     }
 }
@@ -211,7 +219,7 @@ class Enemy {
         this.frame = 0;
         this.y = Math.random() * canvas.height
         this.x = canvas.width + 100
-        this.radius = 50;
+        this.radius = 100;
         this.speed = Math.random()* 1+ 1;
         this.distance;
         this.counted = false;
@@ -231,8 +239,6 @@ class Enemy {
             if ( this.frame == 0) {
                 this.frameX = 0;
             } else this.frameX++;
-            
-          
         }
         
     } 
@@ -243,6 +249,10 @@ class Enemy {
     }
 }
 
+const abuela = new Abuelita();
+
+
+   
 
 
 function handleEnemy(){
@@ -250,35 +260,34 @@ function handleEnemy(){
     if(gameFrame % 500 == 0){
         enemiesArray.push(new Enemy());
     }
-    enemiesArray.forEach((enemy, index_enemy)=>{
+    enemiesArray.forEach((enemy)=>{
         enemy.draw()
         enemy.update()
         if(enemy.distance < enemy.radius + player.radius){
             if(!enemy.counted){
                 
-                score++;
-                enemy.counted = true;
-                enemiesArray.splice (index_enemy, 1)
+                window.location.href = "game-over/go.html"
             }
         }
-        if(enemy.x + enemy.radius < 0){
-            enemiesArray.splice(index_enemy, 1)
-        }
+        
     })
     
 }
 
-
+const bg = new Background(canvas.width,canvas.height)
+const goBg = new Background(canvas.width,canvas.height)
 function animate(){
     ctx.clearRect(0,0, canvas.width, canvas.height);
+    bg.draw();
     handlePavo();
     handleEnemy();
     player.update();
     player.draw();
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = '#9A281A';
     ctx.fillText('score: ' + score, 10, 50);
     gameFrame++;
 
+   
     requestAnimationFrame(animate);
 }
 animate();
