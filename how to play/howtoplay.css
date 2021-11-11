@@ -18,8 +18,9 @@ header{
     height: 10rem;
     display: flex;
     justify-content: center;
-}
+    align-items: center;
 
+}
 #button{
     display:flex;
     justify-content: center;
@@ -63,25 +64,43 @@ button:hover{
     border: none;
 }
 
-
-#instructions h1{
-    font-size: 3em;
+#instructions h2{
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    text-align: center;
+    font-size: 2em;
     font-family: 'Mochiy Pop One', sans-serif;
-    color: #9A281A;
-    display: flex;
-    justify-content:center;
+    color: white;
+   
 }
 
+.imagesHome img{
+    width: 300px;
+    height: 230px;
+    justify-content: space-around;
+    display: flex;  
+}
 
-p{
-    text-align: center;
+h3{
     font-size: 1.5em;
     font-family: 'Mochiy Pop One', sans-serif;
-    color: white; 
-  
-}
-#button{
-    display: flex;
-    justify-content: center;
+    color: #9A281A; 
 }
 
+#inst-blocks{
+    display: flex;
+    justify-content:space-evenly;
+    
+    
+}
+
+#text-inst{
+    display: flex;
+    justify-content:space-evenly;
+    align-items: center;
+    text-align: center;
+    margin-left: 3.8rem;
+
+
+    
+}

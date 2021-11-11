@@ -4,7 +4,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = 1000;
-canvas.height = 700;
+canvas.height = 600;
 
 let score = 0;
 let gameFrame = 0;
@@ -83,8 +83,8 @@ abuelitaLeft.src = 'Images/AbuelitaLeft.png';
 class Abuelita {
     constructor(){
         this.x = canvas.width;
-        this.y = canvas.height /2;
-        this.radius = 50;
+        this.y = canvas.height ;
+        this.radius = 70;
         this.angle = 0;
         this.frameX = 0;
         this.frameY = 0;
@@ -184,7 +184,7 @@ const pavoPop1 = document.createElement('audio');
 pavoPop1.src = "pavo.mp3";
 
 function handlePavo(){
-    
+    //pavo score.
     if(gameFrame % 50 == 0){
         pavosArray.push(new Pavo());
     }
@@ -201,6 +201,7 @@ function handlePavo(){
                 pavosArray.splice (index_pavo, 1)
             }
         }
+        /// saca pavo del array cuando se atrapa
         if(pavo.x + pavo.radius < 0){
             pavosArray.splice(index_pavo, 1)
         }
@@ -208,7 +209,7 @@ function handlePavo(){
     
 }
 
-// enemy 
+// ENEMIES 
 const enemiesArray =[];
 const imgEnemy = new Image();
 imgEnemy.src = "Images/farmer.png"
@@ -219,7 +220,7 @@ class Enemy {
         this.frame = 0;
         this.y = Math.random() * canvas.height
         this.x = canvas.width + 100
-        this.radius = 100;
+        this.radius = 60;
         this.speed = Math.random()* 1+ 1;
         this.distance;
         this.counted = false;
@@ -228,7 +229,7 @@ class Enemy {
         this.spriteHeight = 1027;
     }
     update(){
-        // replaced this.y to this.x on this.speed
+        // replaced this.y to this.x on this.speed// enemy sprite speed
         this.x -= this.speed;
         const dx = this.x - player.x;
         const dy = this.y - player.y;
@@ -249,7 +250,8 @@ class Enemy {
     }
 }
 
-const abuela = new Abuelita();
+
+const abuela = new Abuelita(100,286,50,50);
 
 
    
@@ -263,6 +265,7 @@ function handleEnemy(){
     enemiesArray.forEach((enemy)=>{
         enemy.draw()
         enemy.update()
+        /// si la distancia es < radius enemigo + radius abuelita. te lleva a la ventana
         if(enemy.distance < enemy.radius + player.radius){
             if(!enemy.counted){
                 
@@ -274,6 +277,104 @@ function handleEnemy(){
     
 }
 
+// // ENEMIES-HAY
+class Enemy2{
+    constructor(y,w){
+        this.x = canvas.width;
+        this.y = y;
+        this.width = w;
+        this.height = 80;
+        this.image = new Image();
+        this.image.src = "Images/hay.png";
+    }
+
+    draw(){
+        if(frames % 10 === 0) this.x -= 5;
+        ctx.drawImage(this.image,this.x,this.x,this.width,this.height)
+    }
+}
+
+let enemies = [];
+
+function generateEnemies(){
+    if (frames % 100 == 0 || frames % 60 === 0 || frames % 170 === 0){
+        let y = Math.floor(Math.random() * (400 - 10) + 10)
+        let w = Math.floor(Math.random() * (80 - 30) + 30)
+
+        const enemigo = new Enemy2(y,w)
+
+        enemies.push(enemigo)
+    }
+}
+
+function drawEnemy2(){
+    enemies.forEach((enemy, index_enemy)=>{
+        enemy.draw()
+
+        if(enemy.distance < enemy.radius + player.radius){
+            if(!enemy.counted){
+                
+                window.location.href = "game-over/go.html"
+            }
+        }
+        if (enemy.x + enemy.width <= 0){
+            enemies.splice(index_enemy, 1)
+        }
+    })
+}
+// const hayArray =[];
+// const imgHay = new Image();
+// imgHay.src = "Images/hay.png"
+// class EnemyHay {
+//     constructor(){
+
+//         // inverted the x and y axis
+//         // this.frame = 0;
+//         this.y = canvas.height;
+//         this.x = canvas.width;
+//         this.radius = 100;
+//         // this.speed = Math.random()* 1+ 1;
+//         this.distance;
+//         this.counted = false;
+//         // this.frameX = 0;
+//         // this.spriteWidth = 1351;
+//         // this.spriteHeight = 1027;
+//     }
+//     update(){
+//         // replaced this.y to this.x on this.speed// enemy sprite speed
+//         this.x -= this.speed;
+//         const dx = this.x - player.x;
+//         const dy = this.y - player.y;
+//         // this.distance = Math.sqrt(dx * dx + dy * dy);
+//         // 
+        
+//     } 
+
+//     draw(){
+        
+//         ctx.drawImage(imgHay,this.x,this.y,this.width,this.height);
+//     }
+// }
+// function handleHay(){
+    
+//     if(gameFrame % 500 == 0){
+//         hayArray.push(new EnemyHay());
+//     }
+//     hayArray.forEach((enemy1)=>{
+//         enemy1.draw()
+//         enemy1.update()
+//         /// si la distancia es < radius enemigo + radius abuelita. te lleva a la ventana
+//         if(enemy1.distance < enemy1.radius + player.radius){
+//             if(!enemy1.counted){
+                
+//                 window.location.href = "game-over/go.html"
+//             }
+//         }
+        
+//     })
+    
+// }
+
 const bg = new Background(canvas.width,canvas.height)
 const goBg = new Background(canvas.width,canvas.height)
 function animate(){
@@ -281,6 +382,8 @@ function animate(){
     bg.draw();
     handlePavo();
     handleEnemy();
+    generateEnemies();
+    drawEnemy2();
     player.update();
     player.draw();
     ctx.fillStyle = '#9A281A';
