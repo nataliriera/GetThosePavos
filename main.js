@@ -22,7 +22,7 @@ else {
         this.play();
     }, false);
 }
-  audio.play();
+  
 
 
 //background
@@ -289,25 +289,27 @@ class Enemy2{
     }
 
     draw(){
-        if(frames % 10 === 0) this.x -= 5;
-        ctx.drawImage(this.image,this.x,this.x,this.width,this.height)
+        if(gameFrame % 10 === 0) this.x -= 5;
+        ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
     }
 }
 
 let enemies = [];
 
 function generateEnemies(){
-    if (frames % 100 == 0 || frames % 60 === 0 || frames % 170 === 0){
+    if (gameFrame % 60 === 0 || gameFrame % 170 === 0){
         let y = Math.floor(Math.random() * (400 - 10) + 10)
         let w = Math.floor(Math.random() * (80 - 30) + 30)
 
         const enemigo = new Enemy2(y,w)
 
         enemies.push(enemigo)
+        console.log("hola ")
     }
 }
 
 function drawEnemy2(){
+    console.log("prueba")
     enemies.forEach((enemy, index_enemy)=>{
         enemy.draw()
 
@@ -384,13 +386,17 @@ function animate(){
     handleEnemy();
     generateEnemies();
     drawEnemy2();
+    audio.play();
+    console.log(enemies.length);
     player.update();
     player.draw();
     ctx.fillStyle = '#9A281A';
     ctx.fillText('score: ' + score, 10, 50);
     gameFrame++;
 
-   
+//    if (score >=100){
+//        winner()
+//    }
     requestAnimationFrame(animate);
 }
 animate();

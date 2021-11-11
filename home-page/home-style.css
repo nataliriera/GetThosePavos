@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
 
 body{
-    background-image: url("/Images/woodbackground.jpg");
+    background-image: url("../Images/woodbackground.jpg");
     background-size: contain;
     width: 100vw;
     height: 100vh;
