@@ -6,6 +6,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = 1000;
 canvas.height = 600;
 
+let hayArray = [];
 let score = 0;
 let gameFrame = 0;
 ctx.font = "50px Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif";
@@ -24,7 +25,6 @@ else {
 }
   
 
-
 //background
 class Background {
     //constructor
@@ -34,10 +34,9 @@ class Background {
         this.width = w;
         this.height = h;
         this.image = new Image();
-        this.image.src = "Images/bgcopy.png" // ./ => en este mismo 
+        this.image.src = "Images/bg.png"
     }
 
-    
     draw(){
         //para hacer que el background se mueva
         if(this.x < -canvas.width){
@@ -92,6 +91,7 @@ class Abuelita {
         this.spriteWidth = 1141;
         this.spriteHeight = 992;
     }
+
     update(){
         const dx = this.x - mouse.x;
         const dy = this.y - mouse.y;
@@ -102,6 +102,7 @@ class Abuelita {
             this.y -= dy/10;
         }
     }
+
     draw(){
         if (mouse.click){
             ctx.beginPath();
@@ -113,13 +114,9 @@ class Abuelita {
                     this.frameX = 0;
                 } else this.frameX++;
                 
-              
             }
-        } 
+        }
 
-        
-        
- 
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.closePath();
@@ -127,10 +124,17 @@ class Abuelita {
             ctx.drawImage(abuelitaLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x - 140, this.y - 140, this.spriteWidth/4, this.spriteHeight/4);
         }else{
             ctx.drawImage(abuelitaRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.x - 140, this.y - 140, this.spriteWidth/4, this.spriteHeight/4);
-
         }
     }
-    
+
+    collision(item){
+        return(
+            this.x < item.x + item.width &&
+            this.x + this.width > item.x &&
+            this.y < item.y + item.height &&
+            this.y + this.height > item.y
+        )
+    }  
 }
 const player = new Abuelita();
 
@@ -138,7 +142,9 @@ const player = new Abuelita();
 const pavosArray =[];
 const imgPavo = new Image();
 imgPavo.src = "Images/Flying.png"
+
 class Pavo {
+
     constructor(){
 
         // inverted the x and y axis
@@ -154,6 +160,7 @@ class Pavo {
         this.spriteWidth = 764;
         this.spriteHeight = 646;
     }
+
     update(){
         // replaced this.y to this.x on this.speed
         this.x -= this.speed;
@@ -170,9 +177,7 @@ class Pavo {
             if ( this.frame == 4 ||  this.frame == 9 ||  this.frame == 14) {
                 this.frameY = 0;
             } else this.frameY++;
-
-        }
-        
+        } 
     } 
 
     draw(){
@@ -182,6 +187,7 @@ class Pavo {
 
 const pavoPop1 = document.createElement('audio');
 pavoPop1.src = "pavo.mp3";
+
 
 function handlePavo(){
     //pavo score.
@@ -205,15 +211,16 @@ function handlePavo(){
         if(pavo.x + pavo.radius < 0){
             pavosArray.splice(index_pavo, 1)
         }
-    })
-    
+    }) 
 }
 
 // ENEMIES 
 const enemiesArray =[];
 const imgEnemy = new Image();
 imgEnemy.src = "Images/farmer.png"
+
 class Enemy {
+
     constructor(){
 
         // inverted the x and y axis
@@ -228,8 +235,8 @@ class Enemy {
         this.spriteWidth = 1351;
         this.spriteHeight = 1027;
     }
+
     update(){
-        // replaced this.y to this.x on this.speed// enemy sprite speed
         this.x -= this.speed;
         const dx = this.x - player.x;
         const dy = this.y - player.y;
@@ -241,20 +248,12 @@ class Enemy {
                 this.frameX = 0;
             } else this.frameX++;
         }
-        
     } 
 
     draw(){
-        
         ctx.drawImage(imgEnemy, this.frameX * this.spriteWidth, 0, this.spriteWidth, this.spriteHeight, this.x - 140, this.y - 140, this.spriteWidth/4, this.spriteHeight/4);
     }
 }
-
-
-const abuela = new Abuelita(100,286,50,50);
-
-
-   
 
 
 function handleEnemy(){
@@ -268,28 +267,31 @@ function handleEnemy(){
         /// si la distancia es < radius enemigo + radius abuelita. te lleva a la ventana
         if(enemy.distance < enemy.radius + player.radius){
             if(!enemy.counted){
-                
                 window.location.href = "game-over/go.html"
             }
-        }
-        
-    })
-    
+        }  
+    }) 
 }
 
 // // ENEMIES-HAY
+const enemiesArray2 =[];
 class Enemy2{
+
     constructor(y,w){
+
         this.x = canvas.width;
         this.y = y;
         this.width = w;
         this.height = 80;
+        this.radius = 60;
+        this.counted = false;
+        this.distance;
         this.image = new Image();
-        this.image.src = "Images/hay.png";
+        this.image.src = "Images/haystack.png";
     }
 
     draw(){
-        if(gameFrame % 10 === 0) this.x -= 5;
+        if(gameFrame % 20 === 0) this.x -= 10;
         ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
     }
 }
@@ -297,85 +299,34 @@ class Enemy2{
 let enemies = [];
 
 function generateEnemies(){
-    if (gameFrame % 60 === 0 || gameFrame % 170 === 0){
-        let y = Math.floor(Math.random() * (400 - 10) + 10)
-        let w = Math.floor(Math.random() * (80 - 30) + 30)
-
+    if (gameFrame % 900 === 0 || gameFrame % 900 === 0){
+        let y = Math.floor(Math.random() * (100 - 10) + 10)
+        let w = Math.floor(Math.random() * (100 - 10) + 10)
         const enemigo = new Enemy2(y,w)
-
-        enemies.push(enemigo)
-        console.log("hola ")
+        enemies.push(enemigo)   
     }
 }
 
 function drawEnemy2(){
-    console.log("prueba")
-    enemies.forEach((enemy, index_enemy)=>{
+    enemies.forEach((enemy)=>{
         enemy.draw()
-
         if(enemy.distance < enemy.radius + player.radius){
             if(!enemy.counted){
-                
                 window.location.href = "game-over/go.html"
             }
         }
         if (enemy.x + enemy.width <= 0){
-            enemies.splice(index_enemy, 1)
+            enemies.splice(1)
         }
     })
 }
-// const hayArray =[];
-// const imgHay = new Image();
-// imgHay.src = "Images/hay.png"
-// class EnemyHay {
-//     constructor(){
 
-//         // inverted the x and y axis
-//         // this.frame = 0;
-//         this.y = canvas.height;
-//         this.x = canvas.width;
-//         this.radius = 100;
-//         // this.speed = Math.random()* 1+ 1;
-//         this.distance;
-//         this.counted = false;
-//         // this.frameX = 0;
-//         // this.spriteWidth = 1351;
-//         // this.spriteHeight = 1027;
-//     }
-//     update(){
-//         // replaced this.y to this.x on this.speed// enemy sprite speed
-//         this.x -= this.speed;
-//         const dx = this.x - player.x;
-//         const dy = this.y - player.y;
-//         // this.distance = Math.sqrt(dx * dx + dy * dy);
-//         // 
-        
-//     } 
 
-//     draw(){
-        
-//         ctx.drawImage(imgHay,this.x,this.y,this.width,this.height);
-//     }
-// }
-// function handleHay(){
-    
-//     if(gameFrame % 500 == 0){
-//         hayArray.push(new EnemyHay());
-//     }
-//     hayArray.forEach((enemy1)=>{
-//         enemy1.draw()
-//         enemy1.update()
-//         /// si la distancia es < radius enemigo + radius abuelita. te lleva a la ventana
-//         if(enemy1.distance < enemy1.radius + player.radius){
-//             if(!enemy1.counted){
-                
-//                 window.location.href = "game-over/go.html"
-//             }
-//         }
-        
-//     })
-    
-// }
+
+function gameWin(){
+    window.location.href = "win/win.html"
+}
+
 
 const bg = new Background(canvas.width,canvas.height)
 const goBg = new Background(canvas.width,canvas.height)
@@ -387,16 +338,14 @@ function animate(){
     generateEnemies();
     drawEnemy2();
     audio.play();
-    console.log(enemies.length);
     player.update();
     player.draw();
     ctx.fillStyle = '#9A281A';
     ctx.fillText('score: ' + score, 10, 50);
     gameFrame++;
-
-//    if (score >=100){
-//        winner()
-//    }
+    if (score >= 20){
+        gameWin()
+    }
     requestAnimationFrame(animate);
 }
 animate();

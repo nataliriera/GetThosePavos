@@ -6,9 +6,9 @@ body{
     width: 100vw;
     height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    
 }
 
 header{
@@ -64,36 +64,27 @@ button:hover{
 }
 
 
-#instructions h1{
+#win h1{
     font-size: 3em;
     font-family: 'Mochiy Pop One', sans-serif;
     color: #9A281A;
     display: flex;
     justify-content:center;
-    margin-top: 5px;
 }
 
 
-p{
+/* p{
     text-align: center;
     font-size: 1.5em;
     font-family: 'Mochiy Pop One', sans-serif;
     color: white; 
   
-}
+} */
 #button{
     display: flex;
     justify-content: center;
 }
 
-#die{
-    width: 100%;
-    display: flex;  
-    justify-content: center;
-    align-items: center;
-}
-
-#old{
-    height: 250px;
-    width: 250px;
+#container{
+    
 }
