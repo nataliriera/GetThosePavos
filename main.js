@@ -274,52 +274,52 @@ function handleEnemy(){
 }
 
 // // ENEMIES-HAY
-const enemiesArray2 =[];
-class Enemy2{
+// const enemiesArray2 =[];
+// class Enemy2{
 
-    constructor(y,w){
+//     constructor(y,w){
 
-        this.x = canvas.width;
-        this.y = y;
-        this.width = w;
-        this.height = 80;
-        this.radius = 60;
-        this.counted = false;
-        this.distance;
-        this.image = new Image();
-        this.image.src = "Images/haystack.png";
-    }
+//         this.x = canvas.width;
+//         this.y = y;
+//         this.width = w;
+//         this.height = 80;
+//         this.radius = 60;
+//         this.counted = false;
+//         this.distance;
+//         this.image = new Image();
+//         this.image.src = "Images/haystack.png";
+//     }
 
-    draw(){
-        if(gameFrame % 20 === 0) this.x -= 10;
-        ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
-    }
-}
+//     draw(){
+//         if(gameFrame % 20 === 0) this.x -= 10;
+//         ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
+//     }
+// }
 
-let enemies = [];
+// let enemies = [];
 
-function generateEnemies(){
-    if (gameFrame % 900 === 0 || gameFrame % 900 === 0){
-        let y = Math.floor(Math.random() * (100 - 10) + 10)
-        let w = Math.floor(Math.random() * (100 - 10) + 10)
-        const enemigo = new Enemy2(y,w)
-        enemies.push(enemigo)   
-    }
-}
+// function generateEnemies(){
+//     if (gameFrame % 900 === 0 || gameFrame % 900 === 0){
+//         let y = Math.floor(Math.random() * (100 - 10) + 10)
+//         let w = Math.floor(Math.random() * (100 - 10) + 10)
+//         const enemigo = new Enemy2(y,w)
+//         enemies.push(enemigo)   
+//     }
+// }
 
-function drawEnemy2(){
-    enemies.forEach((enemy)=>{
-        enemy.draw()
-        if(enemy.distance < enemy.radius + player.radius){
-            if(!enemy.counted){
-                window.location.href = "game-over/go.html"
-            }
-        }
-        if (enemy.x + enemy.width <= 0){
-            enemies.splice(1)
-        }
-    })
-}
+// function drawEnemy2(){
+//     enemies.forEach((enemy)=>{
+//         enemy.draw()
+//         if(enemy.distance < enemy.radius + player.radius){
+//             if(!enemy.counted){
+//                 window.location.href = "game-over/go.html"
+//             }
+//         }
+//         if (enemy.x + enemy.width <= 0){
+//             enemies.splice(1)
+//         }
+//     })
+// }
 
 
 
@@ -335,8 +335,8 @@ function animate(){
     bg.draw();
     handlePavo();
     handleEnemy();
-    generateEnemies();
-    drawEnemy2();
+    // generateEnemies();
+    // drawEnemy2();
     audio.play();
     player.update();
     player.draw();
